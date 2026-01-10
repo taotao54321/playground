@@ -1,9 +1,44 @@
 "use strict";
 
+const MEOW_SOUNDS = [
+    new Audio("meow-01.opus"),
+    new Audio("meow-02.opus"),
+    new Audio("meow-03.opus"),
+    new Audio("meow-04.opus"),
+];
+
 const [CANVAS_W, CANVAS_H] = get_canvas_size();
 
 const EYE_W = CANVAS_W / 6;
 const EYE_H = EYE_W * 2;
+
+const assert = console.assert;
+
+function rand_range_float(...args) {
+    const [start, end] = args;
+
+    assert(start < end);
+
+    return start + (end - start) * Math.random();
+}
+
+function rand_range_int(...args) {
+    const [start, end] = args;
+
+    assert(start < end);
+    assert(Number.isSafeInteger(start));
+    assert(Number.isSafeInteger(end));
+
+    return Math.floor(rand_range_float(start, end));
+}
+
+function rand_choose_array(...args) {
+    const [xs] = args;
+
+    const i = rand_range_int(0, xs.length);
+
+    return xs[i];
+}
 
 function get_canvas() {
     return document.getElementById("canvas");
@@ -40,8 +75,8 @@ function model_new() {
 
 function dst_new() {
     return {
-        x: 0.1 * CANVAS_W + 0.8 * CANVAS_W * Math.random(),
-        y: 0.1 * CANVAS_H + 0.8 * CANVAS_H * Math.random(),
+        x: CANVAS_W * rand_range_float(0.1, 0.9),
+        y: CANVAS_H * rand_range_float(0.1, 0.9),
     };
 }
 
@@ -69,6 +104,9 @@ function on_pointerdown(...args) {
 
     model.dst.x = ev.offsetX;
     model.dst.y = ev.offsetY;
+
+    const sound = rand_choose_array(MEOW_SOUNDS);
+    sound.play();
 }
 
 function tick(...args) {
