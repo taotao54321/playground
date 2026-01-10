@@ -1,3 +1,5 @@
+"use strict";
+
 const [CANVAS_W, CANVAS_H] = get_canvas_size();
 
 const EYE_W = CANVAS_W / 6;
