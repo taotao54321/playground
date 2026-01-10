@@ -1,10 +1,10 @@
 "use strict";
 
 const MEOW_SOUNDS = [
-    new Audio("meow-01.opus"),
-    new Audio("meow-02.opus"),
-    new Audio("meow-03.opus"),
-    new Audio("meow-04.opus"),
+    get_audio("meow-01"),
+    get_audio("meow-02"),
+    get_audio("meow-03"),
+    get_audio("meow-04"),
 ];
 
 const [CANVAS_W, CANVAS_H] = get_canvas_size();
@@ -48,6 +48,12 @@ function get_canvas_size() {
     const canvas = get_canvas();
 
     return [canvas.width, canvas.height];
+}
+
+function get_audio(...args) {
+    const [id] = args;
+
+    return document.getElementById(id);
 }
 
 document.addEventListener("DOMContentLoaded", main);
