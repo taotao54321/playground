@@ -5,6 +5,16 @@
 
 "use strict";
 
+const PARAMS_INI = {
+    rho:   0.5,
+    kappa: 0.003,
+    beta:  1.3,
+    alpha: 0.08,
+    theta: 0.025,
+    mu:    0.07,
+    gamma: 0.00005,
+};
+
 const CANVAS = document.getElementById("canvas");
 
 const [WORLD_W, WORLD_H] = [CANVAS.width, CANVAS.height];
@@ -28,6 +38,7 @@ let worker = null;
 let paused = false;
 
 const form = {
+    reset: document.getElementById("reset"),
     restart: document.getElementById("restart"),
     pause: document.getElementById("pause"),
     rho: document.getElementById("rho"),
@@ -72,6 +83,10 @@ function init_worker() {
 }
 
 function init_form() {
+    form.reset.addEventListener("click", (_ev) => {
+        reset_params();
+    });
+
     form.restart.addEventListener("click", (_ev) => {
         worker.postMessage(msg_restart());
         worker.postMessage(msg_tick());
@@ -100,6 +115,23 @@ function init_form() {
     setup_param_io(form.theta, form.theta_value);
     setup_param_io(form.mu,    form.mu_value);
     setup_param_io(form.gamma, form.gamma_value);
+
+    reset_params();
+}
+
+function reset_params() {
+    const f = (input, output, value) => {
+        input.value = value;
+        param_changed(input, output);
+    };
+
+    f(form.rho, form.rho_value, PARAMS_INI.rho);
+    f(form.kappa, form.kappa_value, PARAMS_INI.kappa);
+    f(form.beta, form.beta_value, PARAMS_INI.beta);
+    f(form.alpha, form.alpha_value, PARAMS_INI.alpha);
+    f(form.theta, form.theta_value, PARAMS_INI.theta);
+    f(form.mu, form.mu_value, PARAMS_INI.mu);
+    f(form.gamma, form.gamma_value, PARAMS_INI.gamma);
 }
 
 function pause_state_changed() {
