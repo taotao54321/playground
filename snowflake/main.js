@@ -8,8 +8,8 @@
 const PARAMS_INI = {
     rho:   0.5,
     kappa: 0.003,
-    beta:  1.3,
-    alpha: 0.08,
+    beta:  1.21,
+    alpha: 0.07,
     theta: 0.025,
     mu:    0.07,
     gamma: 0.00005,
